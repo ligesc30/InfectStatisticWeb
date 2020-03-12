@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nCoV-全国分布图</title>
+    <!-- 1. 引入echarts -->
+    <script src="./js/echarts.min.js"></script>
+  </head>
+  <body>
+    <!-- 2. 定义dom容器 -->
+    <div id="container" style="width: 800px;height: 600px"></div>
+    <!-- 3. 将图标配置应用到容器中 -->
+    <script>
+      // 将图标实例化和容器关联
+      var myChart = echarts.init(document.querySelector('#container'))
+      // 配置图标数据信息
+      myChart.setOption({
+        title: {
+          // 标题
+          text: 'nCoV-全国疫情统计可视化地图',
+          subtext: '221701216-李舸',
+          left: 'center'
+        },
+        // 图表背景色
+        backgroundColor: '#f7f7f7'
+      })
+    </script>
+  </body>
+</html>
