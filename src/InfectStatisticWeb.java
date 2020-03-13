@@ -42,10 +42,10 @@ public class InfectStatisticWeb {
 		}
 	}
 	
-	public static JSONObject dealDate() {
+	public static JSONArray dealData() {
 		
 		JSONArray needArray = new JSONArray();
-		JSONObject needObj = new JSONObject();
+		//JSONObject needObj = new JSONObject();
 		JSONArray array = spider();
 		
 		if(array == null) {
@@ -54,17 +54,22 @@ public class InfectStatisticWeb {
 		
 		int size = array.size();
 		for (int i = 0; size > i; i++) {
-			
+			//JSONObject need = new JSONObject();
 			JSONObject jo1 = (JSONObject)array.get(i);
 			
 			if (jo1.get("countryName").toString().equals("ÖÐ¹ú")) {
-				//jo1.put("name", jo1.getString("provinceShortName"));
-				//	jo1.put("value", jo1.getString("currentConfirmedCount"));
-				needObj.put(jo1.getString("provinceShortName"), jo1);
+				JSONObject jp3 = new JSONObject();
+				jp3.put("name", jo1.get("provinceShortName").toString());
+				jp3.put("value", jo1.get("currentConfirmedCount").toString());
+				jp3.put("confirmedCount", jo1.get("confirmedCount").toString());
+				jp3.put("curedCount", jo1.get("curedCount").toString());
+				jp3.put("suspectedCount", jo1.get("suspectedCount").toString());
+				jp3.put("deadCount", jo1.get("deadCount").toString());
+				needArray.add(jp3);
 			}
 		}
 		
-		return needObj;
+		return needArray;
 	}
 
 }

@@ -44,7 +44,7 @@ public class Servlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setCharacterEncoding("utf-8");
-		response.getWriter().println(InfectStatisticWeb.dealDate());
+		response.getWriter().println(InfectStatisticWeb.dealData());
 	}
 
 }
