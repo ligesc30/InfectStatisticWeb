@@ -34,11 +34,22 @@
                 backgroundColor: '#f7f7f7',
                 tooltip: {
                 	formatter: function(params) {
-                		console.log(params, 'formatter');
-                		return `地区：`+ params.name +` <br/>确诊：` + params.value + `人<br/>死亡：`
-                		+ params.data.deadCount + `人`;
+                		return `地区：`+ params.name +` <br/>确诊：` + (params.value || 0) + `人<br/>死亡：`
+                		+ (params.data && params.data.deadCount || 0) + `人`;
                 	},
                 },
+                visualMap: [
+                    { 
+                        type: 'piecewise', 
+                        pieces: [
+                            {gt: 10000},            // (1500, Infinity]
+                            {gt: 1000, lte: 9999},  // (900, 1500]
+                            {gt: 100, lte: 999},  // (310, 1000]
+                            {gt: 10, lte: 99},   // (200, 300]
+                            {gt: 0, lte: 9},       // (10, 200]
+                        ]
+                    }
+                ],
                 series: [{
                     type: 'map',
                     map: 'china',
