@@ -8,7 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 
 public class InfectStatisticWeb {
 	
-	public static JSONObject spider() {
+	public static JSONArray spider() {
 		
 		try {
 			String line;
@@ -16,6 +16,7 @@ public class InfectStatisticWeb {
 			URL url = new URL("https://lab.isaaclin.cn//nCoV/api/area?latest=1");
 			//URL url = new URL("https://ncov.dxy.cn/ncovh5/view/pneumonia");
 			//skip security check on website,ignored
+			
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 	        connection.setDoInput(true);
 	        connection.setRequestMethod("GET");
@@ -28,38 +29,42 @@ public class InfectStatisticWeb {
 			}
 			br.close();
 			connection.disconnect();
-			String s = sbBuilder.toString();
 			
-			//开始进行信息筛选，获得result转化为aray
+			//开始进行信息筛选，获得result转化为array
 			JSONObject jsonObject = JSONObject.parseObject(sbBuilder.toString());
 			JSONArray array = JSONArray.parseArray(jsonObject.get("results").toString());
-			JSONArray needArray = new JSONArray();
-			JSONObject needObj = new JSONObject();
-			//JSONObject jo2 = (JSONObject)jsonObject.get("results");
-			//System.out.printf(jsonObject.get("results").toString());
-			//System.out.printf(array.getString(0));
 
-			int size = array.size();
-			for (int i = 0; size > i; i++) {
-
-				JSONObject jo1 = (JSONObject)array.get(i);
-				//System.out.printf(jo1.get("countryName").toString());
-				if (jo1.get("countryName").toString().equals("中国")) {
-					//JSONObject joNeed = new JSONObject();
-					//joNeed.entrySet()
-					needObj.put(jo1.getString("provinceName"), jo1);
-					//System.out.printf(jo1.get("provinceName").toString());
-				}
-			}
-			//JSONObject jo2 = (JSONObject)array.get(0);
-			
-			return needObj;
-			//System.out.printf(needObj.toJSONString());
+			return array;
 		}
 		catch (Exception e) {
 		    e.printStackTrace();
 		    return null;
 		}
+	}
+	
+	public static JSONObject dealDate() {
+		
+		JSONArray needArray = new JSONArray();
+		JSONObject needObj = new JSONObject();
+		JSONArray array = spider();
+		
+		if(array == null) {
+			return null;
+		}
+		
+		int size = array.size();
+		for (int i = 0; size > i; i++) {
+			
+			JSONObject jo1 = (JSONObject)array.get(i);
+			
+			if (jo1.get("countryName").toString().equals("中国")) {
+				//jo1.put("name", jo1.getString("provinceShortName"));
+				//	jo1.put("value", jo1.getString("currentConfirmedCount"));
+				needObj.put(jo1.getString("provinceShortName"), jo1);
+			}
+		}
+		
+		return needObj;
 	}
 
 }

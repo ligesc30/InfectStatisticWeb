@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSONObject;
 
+import javafx.beans.property.SetProperty;
+
 /**
  * Servlet implementation class Servlet
  */
@@ -41,12 +43,8 @@ public class Servlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-	
-	private Object getDate() {
-		
-		return null;
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().println(InfectStatisticWeb.dealDate());
 	}
 
 }
