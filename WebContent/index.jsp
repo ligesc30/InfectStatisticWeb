@@ -9,10 +9,20 @@
 <script src="dist/echarts.min.js"></script>
 <script src="dist/china.js"></script>
 <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+<link href="css/firstPage.css" rel="stylesheet">
 </head>
 <body>
 	 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div id="main" style="width: 800px;height:600px;"></div>
+	 
+	<div id="overall" style="width: 800px;height:200px;">
+		<div class="overallItem">现有确诊</div>
+		<div class="overallItem">累计确诊</div>
+		<div class="overallItem">累计治愈</div>
+		<div class="overallItem">累计死亡</div>
+	</div>
+    <div id="map" style="width: 800px;height:600px;"></div>
+    <div id="lineChart" style="width: 800px;height:600px;"></div>
+    
     <script type="text/javascript">
     $.ajax({
         url: "Servlet",
@@ -23,7 +33,7 @@
         success : function(json){
 			console.log(json)
         	// 基于准备好的dom，初始化echarts实例
-            var myChart = echarts.init(document.getElementById('main'));
+            var myChart = echarts.init(document.getElementById('map'));
 
             // 指定图表的配置项和数据
             var option = {
@@ -66,6 +76,49 @@
         	console.log(err)
         }
     });
+    </script>
+    <script type="text/javascript">
+    var lineChart = echarts.init(document.getElementById('lineChart'),'infographic');
+
+   lineChart.setOption({
+                  //设置标题
+                  title: {
+                      text: name + '疫情趋势'
+                  },
+                  //数据提示框
+                  tooltip: {
+                      trigger: 'axis',
+                  },
+                  legend: {
+                      data: ['确诊','疑似','治愈','死亡']
+                  },
+                  xAxis: {
+                      data:[]
+                  },
+                  yAxis: {},
+                  series: [
+                      {
+                          name: '确诊',
+                          type: 'line',
+                          data:[]
+                      },
+                      {
+                          name: '疑似',
+                          type: 'line',
+                          data:[]
+                      },
+                      {
+                          name: '治愈',
+                          type: 'line',
+                          data:[]
+                      },
+                      {
+                          name: '死亡',
+                          type: 'line',
+                          data:[]
+                      }
+                  ]
+              },true)
     </script>
 </body>
 </html>

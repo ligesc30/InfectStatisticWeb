@@ -8,12 +8,12 @@ import com.alibaba.fastjson.JSONObject;
 
 public class InfectStatisticWeb {
 	
-	public static JSONArray spider() {
+	public static JSONArray spider(String urlStr) {
 		
 		try {
 			String line;
 			 
-			URL url = new URL("https://lab.isaaclin.cn//nCoV/api/area?latest=1");
+			URL url = new URL(urlStr);
 			//URL url = new URL("https://ncov.dxy.cn/ncovh5/view/pneumonia");
 			//skip security check on website,ignored
 			
@@ -43,10 +43,10 @@ public class InfectStatisticWeb {
 	}
 	
 	public static JSONArray dealData() {
-		
+		String url = "https://lab.isaaclin.cn//nCoV/api/area?latest=1";
 		JSONArray needArray = new JSONArray();
 		//JSONObject needObj = new JSONObject();
-		JSONArray array = spider();
+		JSONArray array = spider(url);
 		
 		if(array == null) {
 			return null;
@@ -70,6 +70,19 @@ public class InfectStatisticWeb {
 		}
 		
 		return needArray;
+	}
+	
+	public static JSONObject dealOverall() {
+		String url = "https://lab.isaaclin.cn/nCoV/api/overall";
+		JSONArray needArray = new JSONArray();
+		//JSONObject needObj = new JSONObject();
+		JSONArray array = spider(url);
+		
+		if(array == null) {
+			return null;
+		}
+		JSONObject jo1 = (JSONObject)array.get(0);
+		return jo1;
 	}
 
 }
