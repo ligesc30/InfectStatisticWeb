@@ -45,7 +45,6 @@ public class InfectStatisticWeb {
 	public static JSONArray dealData() {
 		String url = "https://lab.isaaclin.cn//nCoV/api/area?latest=1";
 		JSONArray needArray = new JSONArray();
-		//JSONObject needObj = new JSONObject();
 		JSONArray array = spider(url);
 		
 		if(array == null) {
@@ -54,9 +53,7 @@ public class InfectStatisticWeb {
 		
 		int size = array.size();
 		for (int i = 0; size > i; i++) {
-			//JSONObject need = new JSONObject();
 			JSONObject jo1 = (JSONObject)array.get(i);
-			//return `地区：${params.name} <br/>确诊：${params.value}人<br/>死亡：${params.data.deadCount}人`;
 			if (jo1.get("countryName").toString().equals("中国")) {
 				JSONObject jp3 = new JSONObject();
 				jp3.put("name", jo1.get("provinceShortName").toString());

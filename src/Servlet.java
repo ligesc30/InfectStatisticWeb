@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import javafx.beans.property.SetProperty;
@@ -31,11 +32,13 @@ public class Servlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		//request.setAttribute("data", getDate());
+		if (request.getAttribute("flag") != null) {
+			
+		}
+		request.setAttribute("data", InfectStatisticWeb.dealData());
+		request.setAttribute("overall", InfectStatisticWeb.dealOverall());
+
 		request.getRequestDispatcher("index.jsp").forward(request, response);
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		//request.setAttribute("data", 0);
 	}
 
 	/**
@@ -43,8 +46,8 @@ public class Servlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setCharacterEncoding("utf-8");
-		response.getWriter().println(InfectStatisticWeb.dealData());
+		//response.setCharacterEncoding("utf-8");
+		//response.getWriter().println(InfectStatisticWeb.dealData());
 	}
 
 }
