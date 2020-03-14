@@ -18,9 +18,7 @@
 	<%
 	}
 	%>
-	<script type="text/javascript">
-	console.log(<%=request.getAttribute("overall") %>)
-	</script>
+
 	
 	 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 	
@@ -39,7 +37,8 @@
           <td style="font-weight: bolder;">现存重症</td>
         </tr>
         <tr>
-          <% JSONObject obj = (JSONObject)request.getAttribute("overall"); %>
+          <% JSONObject obj = (JSONObject)request.getAttribute("overall"); 
+          %>
           <td style="font-weight: bolder; font-size:xx-large; color:crimson;">
           <%=obj.get("currentConfirmedCount").toString() %></td>
           <td style="font-weight: bolder; font-size:xx-large; color:cornflowerblue;">
@@ -122,14 +121,17 @@
         }]
     };
     myChart.setOption(option);
-    </script>
-    
-    <script type="text/javascript">
+    myChart.on('click', function (params) {
+    	   console.log(params);
+    	   alert("./Servlet?flag=1&province=" + params.name);
+    	   location.href = "./Servlet?province=" + params.name;
+    });
+
     var lineChart = echarts.init(document.getElementById('lineChart'),'infographic');
     lineChart.setOption({
                   //设置标题
                   title: {
-                      text: name + '疫情趋势'
+                      text: (name || "全国") + '疫情趋势'
                   },
                   //数据提示框
                   tooltip: {

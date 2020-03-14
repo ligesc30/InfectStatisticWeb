@@ -2,20 +2,25 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 public class InfectStatisticWeb {
 	
-	public static JSONArray spider(String urlStr) {
+	public static JSONArray spider(String urlStr, String key) {
 		
 		try {
 			String line;
 			 
 			URL url = new URL(urlStr);
 			//URL url = new URL("https://ncov.dxy.cn/ncovh5/view/pneumonia");
-			//skip security check on website,ignored
+			//skip security check on website
+			if("https".equalsIgnoreCase(url.getProtocol())){
+	            SslUtils.ignoreSsl();
+	        }
 			
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 	        connection.setDoInput(true);
@@ -32,7 +37,7 @@ public class InfectStatisticWeb {
 			
 			//开始进行信息筛选，获得result转化为array
 			JSONObject jsonObject = JSONObject.parseObject(sbBuilder.toString());
-			JSONArray array = JSONArray.parseArray(jsonObject.get("results").toString());
+			JSONArray array = JSONArray.parseArray(jsonObject.get(key).toString());
 
 			return array;
 		}
@@ -43,9 +48,9 @@ public class InfectStatisticWeb {
 	}
 	
 	public static JSONArray dealData() {
-		String url = "https://lab.isaaclin.cn//nCoV/api/area?latest=1";
+		String url = "https://lab.isaaclin.cn/nCoV/api/area?latest=1";
 		JSONArray needArray = new JSONArray();
-		JSONArray array = spider(url);
+		JSONArray array = spider(url, "results");
 		
 		if(array == null) {
 			return null;
@@ -71,9 +76,9 @@ public class InfectStatisticWeb {
 	
 	public static JSONObject dealOverall() {
 		String url = "https://lab.isaaclin.cn/nCoV/api/overall";
-		JSONArray needArray = new JSONArray();
+		//JSONArray needArray = new JSONArray();
 		//JSONObject needObj = new JSONObject();
-		JSONArray array = spider(url);
+		JSONArray array = spider(url, "results");
 		
 		if(array == null) {
 			return null;
@@ -82,10 +87,10 @@ public class InfectStatisticWeb {
 		return jo1;
 	}
 	
-	public static JSONArray dealOld() {
-		String url = "https://lab.isaaclin.cn//nCoV/api/overall?latest=0";
+	public static JSONArray dealOld(String province) {
+		String url = "https://api.inews.qq.com/newsqa/v1/query/pubished/daily/list?province=";
 		JSONArray needArray = new JSONArray();
-		JSONArray array = spider(url);
+		JSONArray array = spider(url, "data");
 		
 		if(array == null) {
 			return null;
@@ -107,6 +112,25 @@ public class InfectStatisticWeb {
 		}
 		
 		return needArray;
+	}
+	
+	public static JSONArray dealDetail(String province) {
+		try {
+			
+			String url = "https://api.inews.qq.com/newsqa/v1/query/pubished/daily/list?province=" + URLEncoder.encode(province, "UTF-8");;
+			JSONArray needArray = new JSONArray();
+			JSONArray array = spider(url, "data");
+			
+			if(array == null) {
+				return null;
+			}		
+			
+			return array;
+		}
+		catch(Exception e) {
+			return null;
+		}
+		
 	}
 
 }

@@ -31,14 +31,22 @@ public class Servlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		if (request.getAttribute("flag") != null) {
-			
+		// TODO Auto-generated method stubr
+		String province = (String)request.getParameter("province");
+		
+		if (province != null) {
+			System.out.println(province);
+			request.setAttribute("province", province);
+			request.setAttribute("provinceData", InfectStatisticWeb.dealDetail(province));
+			request.getRequestDispatcher("detail.jsp").forward(request, response);
 		}
-		request.setAttribute("data", InfectStatisticWeb.dealData());
-		request.setAttribute("overall", InfectStatisticWeb.dealOverall());
+		else {
+			System.out.println("noprovince");
+			request.setAttribute("data", InfectStatisticWeb.dealData());
+			request.setAttribute("overall", InfectStatisticWeb.dealOverall());
 
-		request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -48,6 +56,7 @@ public class Servlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.setCharacterEncoding("utf-8");
 		//response.getWriter().println(InfectStatisticWeb.dealData());
+		//doGet(request, response);
 	}
 
 }
